@@ -1,4 +1,4 @@
-name: 🚀 Deploy Website to InfinityFree
+name: Deploy Website to InfinityFree
 on:
   push:
     branches:
