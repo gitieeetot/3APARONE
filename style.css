@@ -175,7 +175,7 @@ a {
 }
 
 .form {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     padding: 25px;
     background: var(--cream);
     border: 1px solid var(--border);
@@ -188,7 +188,7 @@ a {
 }
 
 .form label {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     color: var(--blue);
     font-size: 0.95rem;
     font-weight: 700;
@@ -197,8 +197,8 @@ a {
 .form input,
 .form select {
     width: 100%;
-    margin-bottom: 15px;
-    padding: 10px;
+    margin-bottom: 10px;
+    padding: 15px;
     background: #fff;
     border: 1px solid var(--border);
     border-radius: 6px;
@@ -226,7 +226,9 @@ a {
 
 .label,
 .value {
-    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
     line-height: 1.5;
 }
 
@@ -234,12 +236,17 @@ a {
     background: rgba(114, 136, 174, 0.12);
     color: var(--blue);
     font-size: 0.8rem;
-    font-weight: 700;
+    vertical-align: middle;
     text-transform: uppercase;
 }
 
 .value {
     overflow-wrap: anywhere;
+}
+
+.value input {
+    display: block;
+    margin: 0;
 }
 
 button {
