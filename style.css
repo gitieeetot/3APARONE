@@ -313,6 +313,10 @@ button {
         scrollbar-width: thin;
     }
 
+    .nav {
+        width: calc(100% - 48px);
+    }
+
     .nav-link,
     .search {
         flex: 0 0 auto;
@@ -325,7 +329,12 @@ button {
     }
 
     .search {
+        position: absolute;
+        top: 54px;
+        right: 16px;
         width: 36px;
+        margin-left: 0;
+        background: var(--blue);
     }
 
     .page {
