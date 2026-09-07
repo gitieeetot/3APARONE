@@ -335,6 +335,7 @@ button {
         width: 36px;
         margin-left: 0;
         background: var(--blue);
+        z-index: 2;
     }
 
     .page {
