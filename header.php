@@ -1,4 +1,4 @@
-<?php $search_page = $search_page ?? 'SearchCourse.php'; ?>
+<?php $search_page = $search_page ?? 'searchCourse.php'; ?>
 
 <header class="header">
     <div class="logo">

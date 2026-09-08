@@ -4,7 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 include 'db_connect.php';
-$search_page = 'SearchCourse.php';
+$search_page = 'searchCourse.php';
 $success_message = "";
 $error_message = "";
 

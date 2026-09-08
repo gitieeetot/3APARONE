@@ -2,26 +2,29 @@
 session_start();
 include 'db_connect.php';
 $search_page = 'SearchSection.php';
-$message = "";
+$success_message = "";
+$error_message = "";
 
 if (isset($_POST['btn_update'])) {
-    $sectionId = $_POST['section_id'];
     $section = $_POST['section_value'];
     $description = $_POST['section_description'];
 
-    $updateSection = "UPDATE tbl_section SET section = '$section', description = '$description' WHERE ID = '$sectionId'";
+    $updateSection = "UPDATE tbl_section SET section = '$section', description = '$description' WHERE ID = '$_SESSION[section_id]'";
     if ($conn->query($updateSection)) {
         $_POST['SearchSection'] = $section;
-        $message = "Section successfully updated.";
+        $success_message = "Section has been updated.";
+    } else {
+        $error_message = "Section has not been updated.";
     }
 }
 
 if (isset($_POST['btn_delete'])) {
-    $sectionId = $_SESSION['section_id'] ?? $_POST['section_id'];
-    $deleteSection = "DELETE FROM tbl_section WHERE ID = '$sectionId'";
+    $deleteSection = "DELETE FROM tbl_section WHERE ID = '$_SESSION[section_id]'";
     if ($conn->query($deleteSection)) {
-        $message = "Section successfully deleted.";
+        $success_message = "Section has been deleted.";
         unset($_SESSION['section_id'], $_SESSION['section_value'], $_SESSION['section_description']);
+    } else {
+        $error_message = "Section has not been deleted.";
     }
 }
 ?>
@@ -47,7 +50,7 @@ if (isset($_POST['btn_delete'])) {
                 <input type="text" id="SearchSection" name="SearchSection" placeholder="Enter section here">
 
                 <button type="submit" name="btn_search">Search</button>
-                <?php echo $message; ?>
+                <?php include 'messages.php'; ?>
                 <?php
                 if (($_POST['SearchSection'] ?? '') == "")
                 {

@@ -2,26 +2,29 @@
 session_start();
 include 'db_connect.php';
 $search_page = 'SearchYear.php';
-$message = "";
+$success_message = "";
+$error_message = "";
 
 if (isset($_POST['btn_update'])) {
-    $yearId = $_POST['year_id'];
     $yearlevel = $_POST['yearlevel_value'];
     $description = $_POST['yearlevel_description'];
 
-    $updateYear = "UPDATE tbl_yearlevel SET yearlevel = '$yearlevel', description = '$description' WHERE ID = '$yearId'";
+    $updateYear = "UPDATE tbl_yearlevel SET yearlevel = '$yearlevel', description = '$description' WHERE ID = '$_SESSION[year_id]'";
     if ($conn->query($updateYear)) {
         $_POST['SearchYear'] = $yearlevel;
-        $message = "Year level successfully updated.";
+        $success_message = "Year level has been updated.";
+    } else {
+        $error_message = "Year level has not been updated.";
     }
 }
 
 if (isset($_POST['btn_delete'])) {
-    $yearId = $_SESSION['year_id'] ?? $_POST['year_id'];
-    $deleteYear = "DELETE FROM tbl_yearlevel WHERE ID = '$yearId'";
+    $deleteYear = "DELETE FROM tbl_yearlevel WHERE ID = '$_SESSION[year_id]'";
     if ($conn->query($deleteYear)) {
-        $message = "Year level successfully deleted.";
+        $success_message = "Year level has been deleted.";
         unset($_SESSION['year_id'], $_SESSION['yearlevel_value'], $_SESSION['yearlevel_description']);
+    } else {
+        $error_message = "Year level has not been deleted.";
     }
 }
 ?>
@@ -47,7 +50,7 @@ if (isset($_POST['btn_delete'])) {
                 <input type="text" id="SearchYear" name="SearchYear" placeholder="Enter year level here">
 
                 <button type="submit" name="btn_search">Search</button>
-                <?php echo $message; ?>
+                <?php include 'messages.php'; ?>
                 <?php
                 if (($_POST['SearchYear'] ?? '') == "")
                 {

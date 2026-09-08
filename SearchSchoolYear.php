@@ -2,26 +2,29 @@
 session_start();
 include 'db_connect.php';
 $search_page = 'SearchSchoolYear.php';
-$message = "";
+$success_message = "";
+$error_message = "";
 
 if (isset($_POST['btn_update'])) {
-    $schoolyearId = $_POST['schoolyear_id'];
     $schoolyear = $_POST['schoolyear_value'];
     $description = $_POST['schoolyear_description'];
 
-    $updateSchoolYear = "UPDATE tbl_schoolyear SET schoolyear = '$schoolyear', description = '$description' WHERE ID = '$schoolyearId'";
+    $updateSchoolYear = "UPDATE tbl_schoolyear SET schoolyear = '$schoolyear', description = '$description' WHERE ID = '$_SESSION[schoolyear_id]'";
     if ($conn->query($updateSchoolYear)) {
         $_POST['SearchSchoolYear'] = $schoolyear;
-        $message = "School year successfully updated.";
+        $success_message = "School year has been updated.";
+    } else {
+        $error_message = "School year has not been updated.";
     }
 }
 
 if (isset($_POST['btn_delete'])) {
-    $schoolyearId = $_SESSION['schoolyear_id'] ?? $_POST['schoolyear_id'];
-    $deleteSchoolYear = "DELETE FROM tbl_schoolyear WHERE ID = '$schoolyearId'";
+    $deleteSchoolYear = "DELETE FROM tbl_schoolyear WHERE ID = '$_SESSION[schoolyear_id]'";
     if ($conn->query($deleteSchoolYear)) {
-        $message = "School year successfully deleted.";
+        $success_message = "School year has been deleted.";
         unset($_SESSION['schoolyear_id'], $_SESSION['schoolyear_value'], $_SESSION['schoolyear_description']);
+    } else {
+        $error_message = "School year has not been deleted.";
     }
 }
 ?>
@@ -47,7 +50,7 @@ if (isset($_POST['btn_delete'])) {
                 <input type="text" id="SearchSchoolYear" name="SearchSchoolYear" placeholder="Enter school year here">
 
                 <button type="submit" name="btn_search">Search</button>
-                 <?php echo $message; ?>
+                 <?php include 'messages.php'; ?>
                 <?php
                 if (($_POST['SearchSchoolYear'] ?? '') == "")
                 {

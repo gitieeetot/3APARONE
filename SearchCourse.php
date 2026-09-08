@@ -1,27 +1,30 @@
 <?php
 session_start();
 include 'db_connect.php';
-$search_page = 'SearchCourse.php';
-$message = "";
+$search_page = 'searchCourse.php';
+$success_message = "";
+$error_message = "";
 
 if (isset($_POST['btn_update'])) {
-    $courseId = $_POST['course_id'];
     $course = $_POST['course_value'];
     $description = $_POST['course_description'];
 
-    $updateCourse = "UPDATE tbl_course SET course = '$course', description = '$description' WHERE ID = '$courseId'";
+    $updateCourse = "UPDATE tbl_course SET course = '$course', description = '$description' WHERE ID = '$_SESSION[course_id]'";
     if ($conn->query($updateCourse)) {
         $_POST['SearchCourse'] = $course;
-        $message = "Course successfully updated.";
+        $success_message = "Course has been updated.";
+    } else {
+        $error_message = "Course has not been updated.";
     }
 }
 
 if (isset($_POST['btn_delete'])) {
-    $courseId = $_SESSION['course_id'] ?? $_POST['course_id'];
-    $deleteCourse = "DELETE FROM tbl_course WHERE ID = '$courseId'";
+    $deleteCourse = "DELETE FROM tbl_course WHERE ID = '$_SESSION[course_id]'";
     if ($conn->query($deleteCourse)) {
-        $message = "Course successfully deleted.";
-        unset($_SESSION['course_id'], $_SESSION['course_value'], $_SESSION['course_description']);
+        $success_message = "Course has been deleted.";
+        unset($_SESSION['course_id']);
+    } else {
+        $error_message = "Course has not been deleted.";
     }
 }
 ?>
@@ -38,6 +41,7 @@ if (isset($_POST['btn_delete'])) {
     <?php include 'header.php'; ?>
 
     <main class="page">
+        <?php include 'messages.php'; ?>
         <div class="heading">
             <p>SEARCH</p>
             <h1>Course</h1>
@@ -45,12 +49,11 @@ if (isset($_POST['btn_delete'])) {
         </div>
 
         <div class="form">
-            <form action="SearchCourse.php" method="POST">
+            <form action="searchCourse.php" method="POST">
                 <label for="SearchCourse">Course:</label>
                 <input type="text" id="SearchCourse" name="SearchCourse" placeholder="Enter course here">
 
-                <button type="submit" name="btn_search">Search</button>
-                <?php echo $message; ?>
+                <button type="submit">Search</button>
                 <?php
                 if (($_POST['SearchCourse'] ?? '') == "")
                 {
@@ -63,8 +66,6 @@ if (isset($_POST['btn_delete'])) {
                         while ($row = $resultCourse->fetch_assoc())
                         {
                             $_SESSION['course_id'] = $row['ID'];
-                            $_SESSION['course_value'] = $row['COURSE'];
-                            $_SESSION['course_description'] = $row['DESCRIPTION'];
                             ?>
                             <div class="table">
                                 <div class="row">
@@ -84,7 +85,6 @@ if (isset($_POST['btn_delete'])) {
                                     </span>
                                 </div>
                             </div>
-                            <input type="hidden" name="course_id" value="<?php echo $row['ID']; ?>">
                             <br>
                             <button type="submit" name="btn_update">Update</button>
                             <br>

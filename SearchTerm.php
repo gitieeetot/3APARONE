@@ -2,26 +2,29 @@
 session_start();
 include 'db_connect.php';
 $search_page = 'SearchTerm.php';
-$message = "";
+$success_message = "";
+$error_message = "";
 
 if (isset($_POST['btn_update'])) {
-    $termId = $_POST['term_id'];
     $term = $_POST['term_value'];
     $description = $_POST['term_description'];
 
-    $updateTerm = "UPDATE tbl_term SET term = '$term', description = '$description' WHERE ID = '$termId'";
+    $updateTerm = "UPDATE tbl_term SET term = '$term', description = '$description' WHERE ID = '$_SESSION[term_id]'";
     if ($conn->query($updateTerm)) {
         $_POST['SearchTerm'] = $term;
-        $message = "Term successfully updated.";
+        $success_message = "Term has been updated.";
+    } else {
+        $error_message = "Term has not been updated.";
     }
 }
 
 if (isset($_POST['btn_delete'])) {
-    $termId = $_SESSION['term_id'] ?? $_POST['term_id'];
-    $deleteTerm = "DELETE FROM tbl_term WHERE ID = '$termId'";
+    $deleteTerm = "DELETE FROM tbl_term WHERE ID = '$_SESSION[term_id]'";
     if ($conn->query($deleteTerm)) {
-        $message = "Term successfully deleted.";
+        $success_message = "Term has been deleted.";
         unset($_SESSION['term_id'], $_SESSION['term_value'], $_SESSION['term_description']);
+    } else {
+        $error_message = "Term has not been deleted.";
     }
 }
 ?>
@@ -47,7 +50,7 @@ if (isset($_POST['btn_delete'])) {
                 <input type="text" id="SearchTerm" name="SearchTerm" placeholder="Enter term here">
 
                 <button type="submit" name="btn_search">Search</button>
-                <?php echo $message; ?>
+                <?php include 'messages.php'; ?>
                 <?php
                 if (($_POST['SearchTerm'] ?? '') == "")
                 {

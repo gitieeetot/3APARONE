@@ -2,10 +2,10 @@
 session_start();
 include 'db_connect.php';
 $search_page = 'SearchSubjects.php';
-$message = "";
+$success_message = "";
+$error_message = "";
 
 if (isset($_POST['btn_update'])) {
-    $subjectsId = $_POST['subjects_id'];
     $course = $_POST['course'];
     $yearlevel = $_POST['yearlevel'];
     $term = $_POST['term'];
@@ -17,19 +17,22 @@ if (isset($_POST['btn_update'])) {
     $grade = $_POST['grade'];
     $preRequisite = $_POST['pre_requisite'];
 
-    $updateSubjects = "UPDATE tbl_subjects SET course = '$course', yearlevel = '$yearlevel', term = '$term', code = '$code', title = '$title', lecture = '$lecture', laboratory = '$laboratory', credit = '$credit', grade = '$grade', pre_requisite = '$preRequisite' WHERE ID = '$subjectsId'";
+    $updateSubjects = "UPDATE tbl_subjects SET course = '$course', yearlevel = '$yearlevel', term = '$term', code = '$code', title = '$title', lecture = '$lecture', laboratory = '$laboratory', credit = '$credit', grade = '$grade', pre_requisite = '$preRequisite' WHERE ID = '$_SESSION[subjects_id]'";
     if ($conn->query($updateSubjects)) {
         $_POST['SearchSubjects'] = $code;
-        $message = "Subject successfully updated.";
+        $success_message = "Subject has been updated.";
+    } else {
+        $error_message = "Subject has not been updated.";
     }
 }
 
 if (isset($_POST['btn_delete'])) {
-    $subjectsId = $_SESSION['subjects_id'] ?? $_POST['subjects_id'];
-    $deleteSubjects = "DELETE FROM tbl_subjects WHERE ID = '$subjectsId'";
+    $deleteSubjects = "DELETE FROM tbl_subjects WHERE ID = '$_SESSION[subjects_id]'";
     if ($conn->query($deleteSubjects)) {
-        $message = "Subject successfully deleted.";
+        $success_message = "Subject has been deleted.";
         unset($_SESSION['subjects_id']);
+    } else {
+        $error_message = "Subject has not been deleted.";
     }
 }
 ?>
@@ -51,6 +54,7 @@ if (isset($_POST['btn_delete'])) {
         </div>
         <div class="form">
             <form action="SearchSubjects.php" method="POST">
+                <?php include 'messages.php'; ?>
                 <label for="SearchSubjects">Subject Code:</label>
                 <input type="text" id="SearchSubjects" name="SearchSubjects" placeholder="Enter subject code here">
 
