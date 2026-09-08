@@ -47,6 +47,7 @@ if (isset($_POST['btn_delete'])) {
 <body>
     <?php include 'header.php'; ?>
     <main class="page">
+        <?php include 'messages.php'; ?>
         <div class="heading">
             <p>SEARCH</p>
             <h1>Subjects</h1>
@@ -54,7 +55,6 @@ if (isset($_POST['btn_delete'])) {
         </div>
         <div class="form">
             <form action="SearchSubjects.php" method="POST">
-                <?php include 'messages.php'; ?>
                 <label for="SearchSubjects">Subject Code:</label>
                 <input type="text" id="SearchSubjects" name="SearchSubjects" placeholder="Enter subject code here">
 

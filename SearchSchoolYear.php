@@ -39,6 +39,7 @@ if (isset($_POST['btn_delete'])) {
 <body>
     <?php include 'header.php'; ?>
     <main class="page">
+        <?php include 'messages.php'; ?>
         <div class="heading">
             <p>SEARCH</p>
             <h1>School Year</h1>
@@ -50,7 +51,6 @@ if (isset($_POST['btn_delete'])) {
                 <input type="text" id="SearchSchoolYear" name="SearchSchoolYear" placeholder="Enter school year here">
 
                 <button type="submit" name="btn_search">Search</button>
-                 <?php include 'messages.php'; ?>
                 <?php
                 if (($_POST['SearchSchoolYear'] ?? '') == "")
                 {
