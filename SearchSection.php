@@ -1,5 +1,29 @@
-<?php include 'db_connect.php';
+<?php
+session_start();
+include 'db_connect.php';
 $search_page = 'SearchSection.php';
+$message = "";
+
+if (isset($_POST['btn_update'])) {
+    $sectionId = $_POST['section_id'];
+    $section = $_POST['section_value'];
+    $description = $_POST['section_description'];
+
+    $updateSection = "UPDATE tbl_section SET section = '$section', description = '$description' WHERE ID = '$sectionId'";
+    if ($conn->query($updateSection)) {
+        $_POST['SearchSection'] = $section;
+        $message = "Section successfully updated.";
+    }
+}
+
+if (isset($_POST['btn_delete'])) {
+    $sectionId = $_SESSION['section_id'] ?? $_POST['section_id'];
+    $deleteSection = "DELETE FROM tbl_section WHERE ID = '$sectionId'";
+    if ($conn->query($deleteSection)) {
+        $message = "Section successfully deleted.";
+        unset($_SESSION['section_id'], $_SESSION['section_value'], $_SESSION['section_description']);
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,28 +47,45 @@ $search_page = 'SearchSection.php';
                 <input type="text" id="SearchSection" name="SearchSection" placeholder="Enter section here">
 
                 <button type="submit" name="btn_search">Search</button>
+                <?php echo $message; ?>
                 <?php
                 if (($_POST['SearchSection'] ?? '') == "")
                 {
                     echo "Section is Required";
                 } else {
-                    $selectSection = "SELECT * FROM tbl_section WHERE section ='$_POST[SearchSection]'";
-                    $resultSection = $conn->query($selectSection);
-                    if ($resultSection->num_rows > 0)
+                    $selectSearchSection = "SELECT * FROM tbl_section WHERE section ='$_POST[SearchSection]'";
+                    $resultSearchSection = $conn->query($selectSearchSection);
+                    if ($resultSearchSection->num_rows > 0)
                         {
-                        while ($row = $resultSection->fetch_assoc())
+                        while ($row = $resultSearchSection->fetch_assoc())
                         {
+                            $_SESSION['section_id'] = $row['ID'];
+                            $_SESSION['section_value'] = $row['SECTION'];
+                            $_SESSION['section_description'] = $row['DESCRIPTION'];
                             ?>
                             <div class="table">
                                 <div class="row">
+                                    <strong class="label">ID</strong>
+                                    <span class="value"><?php echo $row['ID']; ?></span>
+                                </div>
+                                <div class="row">
                                     <strong class="label">Section</strong>
-                                    <span class="value"><?php echo $row['SECTION']; ?></span>
+                                    <span class="value">
+                                        <input type="text" name="section_value" value="<?php echo $row['SECTION']; ?>" required>
+                                    </span>
                                 </div>
                                 <div class="row">
                                     <strong class="label">Description</strong>
-                                    <span class="value"><?php echo $row['DESCRIPTION']; ?></span>
+                                    <span class="value">
+                                        <input type="text" name="section_description" value="<?php echo $row['DESCRIPTION']; ?>" required>
+                                    </span>
                                 </div>
                             </div>
+                            <input type="hidden" name="section_id" value="<?php echo $row['ID']; ?>">
+                            <br>
+                            <button type="submit" name="btn_update">Update</button>
+                            <br>
+                            <button type="submit" name="btn_delete">Delete</button>
                             <?php
                         }
                     } else {

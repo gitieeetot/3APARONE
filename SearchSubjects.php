@@ -1,5 +1,37 @@
-<?php include 'db_connect.php';
+<?php
+session_start();
+include 'db_connect.php';
 $search_page = 'SearchSubjects.php';
+$message = "";
+
+if (isset($_POST['btn_update'])) {
+    $subjectsId = $_POST['subjects_id'];
+    $course = $_POST['course'];
+    $yearlevel = $_POST['yearlevel'];
+    $term = $_POST['term'];
+    $code = $_POST['code'];
+    $title = $_POST['title'];
+    $lecture = $_POST['lecture'];
+    $laboratory = $_POST['laboratory'];
+    $credit = $_POST['credit'];
+    $grade = $_POST['grade'];
+    $preRequisite = $_POST['pre_requisite'];
+
+    $updateSubjects = "UPDATE tbl_subjects SET course = '$course', yearlevel = '$yearlevel', term = '$term', code = '$code', title = '$title', lecture = '$lecture', laboratory = '$laboratory', credit = '$credit', grade = '$grade', pre_requisite = '$preRequisite' WHERE ID = '$subjectsId'";
+    if ($conn->query($updateSubjects)) {
+        $_POST['SearchSubjects'] = $code;
+        $message = "Subject successfully updated.";
+    }
+}
+
+if (isset($_POST['btn_delete'])) {
+    $subjectsId = $_SESSION['subjects_id'] ?? $_POST['subjects_id'];
+    $deleteSubjects = "DELETE FROM tbl_subjects WHERE ID = '$subjectsId'";
+    if ($conn->query($deleteSubjects)) {
+        $message = "Subject successfully deleted.";
+        unset($_SESSION['subjects_id']);
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,49 +66,59 @@ $search_page = 'SearchSubjects.php';
                         {
                         while ($row = $resultSubjects->fetch_assoc())
                         {
+                            $_SESSION['subjects_id'] = $row['ID'];
                             ?>
                             <div class="table">
                                 <div class="row">
+                                    <strong class="label">ID</strong>
+                                    <span class="value"><?php echo $row['ID']; ?></span>
+                                </div>
+                                <div class="row">
                                     <strong class="label">Course</strong>
-                                    <span class="value"><?php echo $row['COURSE']; ?></span>
+                                    <span class="value"><input type="text" name="course" value="<?php echo $row['COURSE']; ?>" required></span>
                                 </div>
                                 <div class="row">
                                     <strong class="label">Yearlevel</strong>
-                                    <span class="value"><?php echo $row['YEARLEVEL']; ?></span>
+                                    <span class="value"><input type="text" name="yearlevel" value="<?php echo $row['YEARLEVEL']; ?>" required></span>
                                 </div>
                                 <div class="row">
                                     <strong class="label">Term</strong>
-                                    <span class="value"><?php echo $row['TERM']; ?></span>
+                                    <span class="value"><input type="text" name="term" value="<?php echo $row['TERM']; ?>" required></span>
                                 </div>
                                 <div class="row">
                                     <strong class="label">Code</strong>
-                                    <span class="value"><?php echo $row['CODE']; ?></span>
+                                    <span class="value"><input type="text" name="code" value="<?php echo $row['CODE']; ?>" required></span>
                                 </div>
                                 <div class="row">
                                     <strong class="label">Title</strong>
-                                    <span class="value"><?php echo $row['TITLE']; ?></span>
+                                    <span class="value"><input type="text" name="title" value="<?php echo $row['TITLE']; ?>" required></span>
                                 </div>
                                 <div class="row">
                                     <strong class="label">Lecture</strong>
-                                    <span class="value"><?php echo $row['LECTURE']; ?></span>
+                                    <span class="value"><input type="text" name="lecture" value="<?php echo $row['LECTURE']; ?>" required></span>
                                 </div>
                                 <div class="row">
                                     <strong class="label">Laboratory</strong>
-                                    <span class="value"><?php echo $row['LABORATORY']; ?></span>
+                                    <span class="value"><input type="text" name="laboratory" value="<?php echo $row['LABORATORY']; ?>" required></span>
                                 </div>
                                 <div class="row">
                                     <strong class="label">Credit</strong>
-                                    <span class="value"><?php echo $row['CREDIT']; ?></span>
+                                    <span class="value"><input type="text" name="credit" value="<?php echo $row['CREDIT']; ?>" required></span>
                                 </div>
                                 <div class="row">
                                     <strong class="label">Grade</strong>
-                                    <span class="value"><?php echo $row['GRADE']; ?></span>
+                                    <span class="value"><input type="text" name="grade" value="<?php echo $row['GRADE']; ?>" required></span>
                                 </div>
                                 <div class="row">
                                     <strong class="label">Pre_Requisite</strong>
-                                    <span class="value"><?php echo $row['PRE_REQUISITE']; ?></span>
+                                    <span class="value"><input type="text" name="pre_requisite" value="<?php echo $row['PRE_REQUISITE']; ?>" required></span>
                                 </div>
                             </div>
+                            <input type="hidden" name="subjects_id" value="<?php echo $row['ID']; ?>">
+                            <br>
+                            <button type="submit" name="btn_update">Update</button>
+                            <br>
+                            <button type="submit" name="btn_delete">Delete</button>
                             <?php
                         }
                     } else {

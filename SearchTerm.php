@@ -1,5 +1,29 @@
-<?php include 'db_connect.php';
+<?php
+session_start();
+include 'db_connect.php';
 $search_page = 'SearchTerm.php';
+$message = "";
+
+if (isset($_POST['btn_update'])) {
+    $termId = $_POST['term_id'];
+    $term = $_POST['term_value'];
+    $description = $_POST['term_description'];
+
+    $updateTerm = "UPDATE tbl_term SET term = '$term', description = '$description' WHERE ID = '$termId'";
+    if ($conn->query($updateTerm)) {
+        $_POST['SearchTerm'] = $term;
+        $message = "Term successfully updated.";
+    }
+}
+
+if (isset($_POST['btn_delete'])) {
+    $termId = $_SESSION['term_id'] ?? $_POST['term_id'];
+    $deleteTerm = "DELETE FROM tbl_term WHERE ID = '$termId'";
+    if ($conn->query($deleteTerm)) {
+        $message = "Term successfully deleted.";
+        unset($_SESSION['term_id'], $_SESSION['term_value'], $_SESSION['term_description']);
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,6 +47,7 @@ $search_page = 'SearchTerm.php';
                 <input type="text" id="SearchTerm" name="SearchTerm" placeholder="Enter term here">
 
                 <button type="submit" name="btn_search">Search</button>
+                <?php echo $message; ?>
                 <?php
                 if (($_POST['SearchTerm'] ?? '') == "")
                 {
@@ -34,17 +59,29 @@ $search_page = 'SearchTerm.php';
                         {
                         while ($row = $resultTerm->fetch_assoc())
                         {
+                            $_SESSION['term_id'] = $row['ID'];
+                            $_SESSION['term_value'] = $row['TERM'];
+                            $_SESSION['term_description'] = $row['DESCRIPTION'];
                             ?>
                             <div class="table">
                                 <div class="row">
+                                    <strong class="label">ID</strong>
+                                    <span class="value"><?php echo $row['ID']; ?></span>
+                                </div>
+                                <div class="row">
                                     <strong class="label">Term</strong>
-                                    <span class="value"><?php echo $row['TERM']; ?></span>
+                                    <span class="value"><input type="text" name="term_value" value="<?php echo $row['TERM']; ?>" required></span>
                                 </div>
                                 <div class="row">
                                     <strong class="label">Description</strong>
-                                    <span class="value"><?php echo $row['DESCRIPTION']; ?></span>
+                                    <span class="value"><input type="text" name="term_description" value="<?php echo $row['DESCRIPTION']; ?>" required></span>
                                 </div>
                             </div>
+                            <input type="hidden" name="term_id" value="<?php echo $row['ID']; ?>">
+                            <br>
+                            <button type="submit" name="btn_update">Update</button>
+                            <br>
+                            <button type="submit" name="btn_delete">Delete</button>
                             <?php
                         }
                     } else {
