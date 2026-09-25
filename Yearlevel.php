@@ -1,7 +1,12 @@
-<?php
-include 'db_connect.php';
-$search_page = 'SearchYear.php';
+<?php include 'db_connect.php';
+session_start();
 
+if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$search_page = 'SearchYear.php';
 $success_message = "";
 $error_message = "";
 
@@ -33,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="heading">
             <p>MANAGE</p>
             <h1>Year Level</h1>
-            <p class="subtitle">Add a new year level to your academic system</p>
+            <p class="subtitle">Add a new year level</p>
         </div>
 
         <div class="form">

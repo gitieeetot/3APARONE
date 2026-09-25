@@ -1,7 +1,12 @@
-<?php
-include 'db_connect.php';
-$search_page = 'SearchSchoolYear.php';
+<?php include 'db_connect.php';
+session_start();
+if(!isset($_SESSION['username']) || empty($_SESSION['username']))
+{
+	header ("Location:login.php");
+	exit;
+}
 
+$search_page = 'SearchSchoolYear.php';
 $success_message = "";
 $error_message = "";
 

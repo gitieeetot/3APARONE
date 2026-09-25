@@ -301,6 +301,32 @@ button {
     letter-spacing: 1px;
 }
 
+.gender-options {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 5px 0;
+}
+
+.gender-options label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.gender-options input[type="radio"],
+.gender-options input[type="checkbox"] {
+    width: auto !important;
+    margin: 0 !important;
+    cursor: pointer;
+}
+
+
 @media (max-width: 700px) {
     .header {
         display: block;

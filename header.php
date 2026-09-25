@@ -20,4 +20,6 @@
             <circle cx="11" cy="11" r="8"/>
         </svg>
     </a>
+
+    <nav class="nav"><a href="logout.php" class="nav-link">logout</a></nav>
 </header>
