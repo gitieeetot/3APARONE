@@ -18,6 +18,6 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: htdocs/
+        server-dir: /://infinityfreeapp.com
         protocol: ftp 
         port: 21

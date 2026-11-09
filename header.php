@@ -12,6 +12,7 @@
         <a href="Section.php" class="nav-link">Section</a>
         <a href="SchoolYear.php" class="nav-link">School Year</a>
         <a href="Subjects.php" class="nav-link">Subjects</a>
+        <a href="class.php" class="nav-link">Class</a>
     </nav>
 
     <a href="<?php echo $search_page; ?>" class="search" aria-label="Search" title="Search">

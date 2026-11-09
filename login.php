@@ -6,18 +6,12 @@ if (isset($_POST['btn_submit'])) {
 	$result = $conn -> query ($searchUN);
 	if ($result->num_rows > 0){
 		while($row = $result->fetch_assoc()){
-			if (password_verify($_POST['password'], $row['password'])) {
                 $_SESSION['username'] = $row['username'];
 			header("location: index.php");
 			exit();
-		} else {
-            $error_message = "Invalid password.";
         }
-        }
-    } else {
-        $error_message = "Username not found.";
     }
-}
+    }
 ?>
 
 <!DOCTYPE html>
