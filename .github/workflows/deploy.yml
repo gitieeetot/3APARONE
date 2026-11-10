@@ -9,13 +9,14 @@ jobs:
     name: Sync Files
     runs-on: ubuntu-latest
     steps:
-    - name: Get latest repository code
-      uses: actions/checkout@v4
-    
-    - name: Sync files via FTP
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: "://infinityfreeapp.com"
+      - name: Get latest repository code
+        uses: actions/checkout@v4
+
+      - name: Sync files via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: "/htdocs/"
+          local-dir: "./3APARONE/"
