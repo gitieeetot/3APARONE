@@ -6,7 +6,7 @@ if ($_SERVER['HTTP_HOST'] == 'localhost' || $_SERVER['SERVER_NAME'] == '127.0.0.
     $password = "";
     $db_name = "3aparone";
 } else {
-    // infintyfree
+    // infinityfree
     $host = "://infinityfree.com";
     $username = "if0_42844781";
     $password = "CGPgHtY8k8N";
