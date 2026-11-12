@@ -7,6 +7,7 @@ if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
     exit;
 }
 
+$search_page = 'SearchClass.php';
 $success_message = "";
 $error_message = "";
 

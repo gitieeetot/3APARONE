@@ -6,7 +6,7 @@ if(!isset($_SESSION['username']) || empty($_SESSION['username']))
 	exit;
 }
 
-$search_page = 'searchCourse.php';
+$search_page = 'SearchCourse.php';
 $success_message = "";
 $error_message = "";
 
@@ -54,7 +54,7 @@ if (isset($_POST['btn_delete'])) {
         </div>
 
         <div class="form">
-            <form action="searchCourse.php" method="POST">
+            <form action="SearchCourse.php" method="POST">
                 <label for="SearchCourse">Course:</label>
                 <input type="text" id="SearchCourse" name="SearchCourse" placeholder="Enter course here">
 

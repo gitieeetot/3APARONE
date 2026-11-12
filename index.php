@@ -16,6 +16,7 @@ if(!isset($_SESSION['username']) || empty($_SESSION['username']))
     <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
+    <?php $show_search = false; ?>
     <?php include 'header.php'; ?>
 
     <main class="page home">

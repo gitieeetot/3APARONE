@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="txt_description">Description:</label>
                 <input type="text" id="txt_description" name="description" required>
 
-                <button type="submit" name = btn_submit >Save</button>
+                <button type="submit" name="btn_submit">Save</button>
             </form>
         </div>
     </main>
